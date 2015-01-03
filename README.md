@@ -17,6 +17,7 @@ Our starting point for Hugo themes.
 ## Developing
 
 2 commands, 2 terminals:  
+
 1. gulp watch
 2. gulp hugo-dev-watch 
 
