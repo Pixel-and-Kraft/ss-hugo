@@ -2,9 +2,7 @@
 
 Our starting point for Hugo themes.
 
-## Usage
-
-**Setting Up**
+## Setting Up
 
 - `mkdir dir new-project-name`
 - `cd new-project-name`
@@ -16,7 +14,7 @@ Our starting point for Hugo themes.
 - `npm install`
 - `gulp watch`
 
-**Developing**  
+## Developing
 
 2 commands, 2 terminals:  
 1. gulp watch
