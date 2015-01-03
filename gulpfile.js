@@ -18,6 +18,7 @@ var jshint        = require('gulp-jshint')
 var uglify        = require('gulp-uglify')
 var del           = require('del')
 var shell         = require('gulp-shell')
+var watchG        = require('gulp-watch')
 
 // ------------------------------------------
 // Notes:
@@ -46,7 +47,7 @@ var dest_root = "./../Awesome-New-Theme/"
 var config = { 
 
   // sources
-  copy_src:     ['*.html', '*.md', '*.txt'],
+  copy_src:     ['**/*.{html,md,txt,yaml,json,toml}', '!./node_modules/**', '!./package.json'],
   sass_src:     "static-src/sass/**/*.{sass,scss}",
   js_src:       "static-src/js/**/*.js",
   js_src_entry: "./static-src/js/index.js",
@@ -80,10 +81,19 @@ gulp.task('hugo-dev-watch', function() {
 // Watch / Clean
 
 gulp.task('watch', ['copy-ship', 'sass-dev', 'sass-ship', 'jshint', 'browserify', 'js_ship'], function() {
-  gulp.watch( config.sass_src, ['sass-dev', 'sass-ship'] )
-  gulp.watch( config.copy_src, ['copy-ship'] )
-  gulp.watch( config.js_src, ['jshint'])
+  watchG( config.sass_src, function() {
+    gulp.start('sass-dev')
+    gulp.start('sass-ship')
+  })
+  watchG( config.js_src, function() {
+    gulp.start('jshint')
+  })
+  watchG( config.copy_src, function() {
+    gulp.start('copy-ship')
+  })
 })
+  
+
 
 gulp.task('clean', function(cb) {
   del([
@@ -136,7 +146,6 @@ gulp.task('sass-dev', function() {
     .pipe(sourcemaps.write())
     .pipe(autoprefixer("last 1 version", "> 1%", "ie 9", { cascade: false }))
     .pipe(gulp.dest( config.tmp_css ))
-
 })
 gulp.task('sass-ship', function() {
   gulp.src( config.sass_src )
@@ -149,7 +158,6 @@ gulp.task('sass-ship', function() {
       title: "Size css-min:"
     }))
     .pipe(gulp.dest( config.dest_css ))
-
 })
 
 
@@ -159,8 +167,7 @@ gulp.task('sass-ship', function() {
 
 gulp.task('copy-ship', function() {
   return gulp.src(config.copy_src)
-  .pipe(gulp.dest( dest_root ))
-
+    .pipe(gulp.dest( dest_root ))
 })
 
 
@@ -187,7 +194,6 @@ function bundle() {
       .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest( config.tmp_js ))
-
 }
 
 gulp.task('js_ship', ['browserify'], function() {
