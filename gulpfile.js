@@ -1,4 +1,4 @@
-// npm i --save-dev gulp browser-sync gulp-sass gulp-autoprefixer gulp-plumber gulp-csso gulp-rename gulp-sourcemaps gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del
+// npm i --save-dev gulp browser-sync gulp-sass gulp-autoprefixer gulp-plumber gulp-csso gulp-rename gulp-sourcemaps gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del gulp-plumber
 var gulp          = require('gulp')
 var browserSync   = require('browser-sync')
 var reload        = require('browser-sync').reload
