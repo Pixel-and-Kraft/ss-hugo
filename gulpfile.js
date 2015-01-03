@@ -1,4 +1,4 @@
-// npm i --save-dev gulp browser-sync gulp-sass gulp-autoprefixer gulp-plumber gulp-csso gulp-rename gulp-sourcemaps gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del gulp-plumber
+// npm i --save-dev gulp browser-sync gulp-sass gulp-autoprefixer gulp-plumber gulp-csso gulp-rename gulp-sourcemaps gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del gulp-shell
 var gulp          = require('gulp')
 var browserSync   = require('browser-sync')
 var reload        = require('browser-sync').reload
@@ -17,6 +17,7 @@ var browserify    = require('browserify')
 var jshint        = require('gulp-jshint')
 var uglify        = require('gulp-uglify')
 var del           = require('del')
+var shell         = require('gulp-shell')
 
 // ------------------------------------------
 // Notes:
@@ -63,9 +64,21 @@ var config = {
 
 
 // -----------------------
+// Convenience task to run 
+// hugo watch for the development
+// theme from its root directory
+
+gulp.task('hugo-dev-watch', function() {
+  return gulp.src('', {read: false})
+    .pipe(shell('hugo server --theme=ss-hugo --buildDrafts --watch', {
+      cwd: "./../../"
+    }))
+})
+
+// -----------------------
 // Watch / Clean
 
-gulp.task('watch', ['copy-ship', 'sass-dev', 'sass-ship', 'jshint', 'browserify', 'js_ship', 'bs'], function() {
+gulp.task('watch', ['copy-ship', 'sass-dev', 'sass-ship', 'jshint', 'browserify', 'js_ship'], function() {
   gulp.watch( config.sass_src, ['sass-dev', 'sass-ship'] )
   gulp.watch( config.copy_src, ['copy-ship'] )
   gulp.watch( config.js_src, ['jshint'])
@@ -79,30 +92,34 @@ gulp.task('clean', function(cb) {
   ], {force: true}, cb)
 })
 
+// For development: 2 gulp commands, 2 terminals, same directory
+// gulp hugo-dev-watch
+// gulp watch
+
 
 // -----------------------
 // Browser Sync
 
-gulp.task('bs', ['sass-dev', 'sass-ship', 'copy-ship'], function() {
-  browserSync({
-    // Proxy or Server
-    // proxy: "localhost:2368",
-    server: ({
-      baseDir: "./"
-    }),
-    notify: false,
-    open: false,
-    logLevel: "info",
-    logPrefix: "P&K",
-    logFileChanges: false,
-    ghostMode: {
-        clicks: true,
-        location: true,
-        forms: true,
-        scroll: false
-    }
-  })
-})
+// gulp.task('bs', ['sass-dev', 'sass-ship', 'copy-ship'], function() {
+//   browserSync({
+//     // Proxy or Server
+//     // proxy: "localhost:2368",
+//     server: ({
+//       baseDir: "./"
+//     }),
+//     notify: false,
+//     open: false,
+//     logLevel: "info",
+//     logPrefix: "P&K",
+//     logFileChanges: false,
+//     ghostMode: {
+//         clicks: true,
+//         location: true,
+//         forms: true,
+//         scroll: false
+//     }
+//   })
+// })
 
 
 // -----------------------
@@ -118,7 +135,7 @@ gulp.task('sass-dev', function() {
     .pipe(sourcemaps.write())
     .pipe(autoprefixer("last 1 version", "> 1%", "ie 9", { cascade: false }))
     .pipe(gulp.dest( config.tmp_css ))
-    .pipe(reload({stream:true}))
+
 })
 gulp.task('sass-ship', function() {
   gulp.src( config.sass_src )
@@ -131,7 +148,7 @@ gulp.task('sass-ship', function() {
       title: "Size css-min:"
     }))
     .pipe(gulp.dest( config.dest_css ))
-    .pipe(reload({stream:true}))
+
 })
 
 
@@ -142,7 +159,7 @@ gulp.task('sass-ship', function() {
 gulp.task('copy-ship', function() {
   return gulp.src(config.copy_src)
   .pipe(gulp.dest( dest_root ))
-  .pipe(reload({stream:true}))
+
 })
 
 
@@ -169,7 +186,7 @@ function bundle() {
       .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest( config.tmp_js ))
-    .pipe(reload({stream:true}))
+
 }
 
 gulp.task('js_ship', ['browserify'], function() {
