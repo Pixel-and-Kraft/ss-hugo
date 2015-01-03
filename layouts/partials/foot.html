@@ -1,0 +1,13 @@
+    <!-- make sitewide GoTemplate vars available to script files -->
+    <script>
+      var disqus_shortname = {{ .Site.Params.disqus_shortname }}
+      var google_analytics_accout = {{ .Site.Params.google_analytics_accout }}
+      var home_page_excerpt_style = {{ .Site.Params.home_excerpt_style }}
+      var base_url = {{ .Site.BaseUrl }}
+    </script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/js/main.js"></script>
+
+  </body>
+</html>

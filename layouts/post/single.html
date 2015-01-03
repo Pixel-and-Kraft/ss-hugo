@@ -1,0 +1,98 @@
+{{ partial "head.html" . }}
+
+{{ if eq .Site.Params.sidebar "default" }}
+  {{ partial "sidebars/sidebar-base--default.html" . }}
+{{ end }}
+
+
+<div class="container">
+  <main class="content" role="main">
+
+    <article class="post {{ range .Params.tags }}tag-{{.}} {{end}}">
+
+      <div class="post-wrap blog-post--not-page {{if .Site.Params.bg_img}}post-wrap--boxed{{end}}" id="containerWidthTarget">
+      
+        {{if .Params.excerpt_image.post}}<img src="{{.Site.Params.imgRoot}}/posts/{{.Params.excerpt_image.file}}" alt="">{{end}}
+
+        <section class="post-content">
+          <div class="padding-wrap--target {{if .Site.Params.bg_img}}padding-wrap-BGonly{{end}}">
+            
+            <article class="post">
+            
+              <h1 class="post-title">{{ .Title }}</h1>
+              <span class="post-meta post-meta--top">
+                <time datetime="{{ .Date.Format .Site.Params.date_format }}">
+                  {{ .Date.Format .Site.Params.date_format }} / 
+                </time>
+                {{ .Site.Params.author.name }} {{if .Site.Params.disqus_shortname}}<span class='disqus-comment-wrap'>/ 
+                 <a id="commentCount" href="{{.Slug}}#disqus_thread">Comments</a></span>{{end}}
+              </span>
+              
+              {{.Content}}
+            
+            </article>
+
+            <!-- AUTHOR -->
+            <div class="group">              
+              <div class="share post-footer-social">
+                <span class="share-this-post">Share on:</span>
+            
+                <a class="post-footer--share-link" href="https://twitter.com/share?text=&amp;url={{ .Permalink }}"
+                  onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                  Twitter
+                </a> <span class="post-footer-social--divider">/</span>
+            
+                <a class="post-footer--share-link" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}"
+                  onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                  Facebook
+                </a> <span class="post-footer-social--divider">/</span>
+            
+                <a class="post-footer--share-link" href="https://plus.google.com/share?url={{ .Permalink }}"
+                onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                  Google+
+                </a>
+              </div>
+      
+            </div> <!-- end group -->
+
+            <hr class="body_divider--bar">
+          
+            <aside class="post-footer--author">
+              <img src="{{ .Site.Params.imgRoot }}{{ .Site.Params.author.img }}"  alt="">
+              <h4><span class="author--label">Author:</span> {{ .Site.Params.author.name }}</h4>
+              <p>
+                {{ .Site.Params.author.bio }} <br>
+                <a href="{{ .Site.Params.author.website }}">{{ .Site.Params.author.website }}</a>
+              </p>                
+            </aside>
+
+            <hr class="body_divider--bar {{if .Site.Params.bg_img}}none{{end}}">
+          
+          </div> <!-- END padding-wrap-BGonly -->
+        </section>
+        
+
+        {{ with .Site.DisqusShortname }}
+
+        <section class="post-comments padding-wrap--target" id="disqus-wrap">
+    
+          <div id="disqus_thread"></div>
+            <script>
+              var disqus_shortname = {{.}}
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+        </section>
+        {{ end }}
+
+
+      </div>
+    </article>
+
+  </main>
+</div> <!-- end container wrap -->
+
+{{ partial "foot.html" . }}
