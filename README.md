@@ -12,7 +12,6 @@ Our starting point for Hugo themes.
 - `git clone https://github.com/Pixel-and-Kraft/ss-hugo.git`
 - `cd ss-hugo`
 - `npm install`
-- `gulp watch`
 
 ## Developing
 
