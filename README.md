@@ -10,6 +10,7 @@ Our starting point for Hugo themes.
 - `mkdir themes`
 - `cd themes`
 - `git clone https://github.com/Pixel-and-Kraft/ss-hugo.git`
+- `cd ss-hugo`
 - `npm install`
 - `gulp watch`
 - open `http://localhost:3000`
