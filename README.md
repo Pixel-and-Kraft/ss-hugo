@@ -16,10 +16,10 @@ Our starting point for Hugo themes.
 
 ## Developing
 
-2 commands, 2 terminals:  
+In 2 terminals, 2 commands:  
 
-1. gulp watch
-2. gulp hugo-dev-watch 
+1. `gulp watch`
+2. `gulp hugo-dev-watch`
 
 **Command 1:**  
 Runs front-end-asset development watch tasks.  
