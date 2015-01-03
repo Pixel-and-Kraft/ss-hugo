@@ -37,11 +37,12 @@ var shell         = require('gulp-shell')
 // - Easy to extend existing tasks.
 
 
+// *** Configuration here:
+
 // Destination for shippable theme
 // Needs to go to root of 'themes' directory
-var dest_root = "./../SS-Hugo/"
-
-// Configuration here:
+// Rename to your theme's name
+var dest_root = "./../Awesome-New-Theme/"
 var config = { 
 
   // sources
