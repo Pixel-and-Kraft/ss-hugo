@@ -4,7 +4,7 @@ Our starting point for Hugo themes.
 
 ## Usage
 
-1. `hugo new site-name-here .` Note: the `.` creates the site in the current directory. It's also possible to specify a path.
+1. `hugo new site path-to-site`
 2. `cd site-name/themes`
 1. `git clone https://github.com/Pixel-and-Kraft/ss-hugo.git`
 2. `npm install`
