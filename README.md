@@ -4,8 +4,8 @@ Our starting point for Hugo themes.
 
 ## Usage
 
-- 'mkdir dir new-project-name'
-- 'cd new-project-name'
+- `mkdir dir new-project-name`
+- `cd new-project-name`
 - `hugo new site .` or `hugo new site ./`
 - `mkdir themes`
 - `cd themes`
