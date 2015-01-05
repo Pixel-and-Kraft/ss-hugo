@@ -1,4 +1,6 @@
+// if npm i doesn't work, install dependencies manually:
 // npm i --save-dev gulp browser-sync gulp-sass gulp-autoprefixer gulp-plumber gulp-csso gulp-rename gulp-sourcemaps gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del gulp-shell gulp-watch
+
 var gulp          = require('gulp')
 var browserSync   = require('browser-sync')
 var reload        = require('browser-sync').reload
@@ -100,7 +102,7 @@ gulp.task('watch', ['copy-ship', 'sass-dev', 'sass-ship', 'jshint', 'browserify'
   watchG( config.js_src, function() {
     gulp.start('jshint')
   })
-  watchG( config.copy_src, function() {
+  gulp.watch(config.copy_src, ['clean-ship'], function() {
     gulp.start('copy-ship')
   })
 })
@@ -152,7 +154,7 @@ gulp.task('copy-ship', function() {
 })
 gulp.task('clean-ship', function(cb) {
   del([
-    "./../**/*.{html,md,txt,yaml,json,toml}",
+    "./../" + dest_root + "**/*.{html,md,txt,yaml,json,toml}",
   ], {force: true}, cb)
 })
 

@@ -18,7 +18,7 @@ Our starting point for Hugo themes.
 In 2 terminals, 2 commands:  
 
 1. `gulp watch`
-2. `gulp hugo-dev-watch`
+2. `gulp hugo-watch`
 
 **Command 1:**  
 Runs front-end-asset development watch tasks.  
