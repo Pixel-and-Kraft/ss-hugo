@@ -1,4 +1,4 @@
-// npm i --save-dev gulp browser-sync gulp-sass gulp-autoprefixer gulp-plumber gulp-csso gulp-rename gulp-sourcemaps gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del gulp-shell
+// npm i --save-dev gulp browser-sync gulp-sass gulp-autoprefixer gulp-plumber gulp-csso gulp-rename gulp-sourcemaps gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del gulp-shell gulp-watch
 var gulp          = require('gulp')
 var browserSync   = require('browser-sync')
 var reload        = require('browser-sync').reload
@@ -33,17 +33,25 @@ var watchG        = require('gulp-watch')
 //     - minified
 //     - located anywhere, such as in 
 //       platform-specific theme locations
-// - Browsersynced with included server or 
-//   with existing server using a proxy
 // - Easy to extend existing tasks.
+//
+// Usage:
+// For Development: 2 gulp commands, 2 terminals, same directory
+// gulp hugo-watch
+// gulp watch
+// For Production:
+// Done. This approach constantly builds your production/shippable 
+// ready theme in the base "themes" directory. By default, this is 
+// named "Awesome-New-Theme"... customize below.
 
-
-// *** Configuration here:
+// --- Configuration below ---
 
 // Destination for shippable theme
 // Needs to go to root of 'themes' directory
-// Rename to your theme's name
+// Rename for your theme
 var dest_root = "./../Awesome-New-Theme/"
+
+// All other config here: 
 var config = { 
 
   // sources
@@ -65,20 +73,24 @@ var config = {
 }
 
 
+// -- No Config Needed Below --
+// -- only additions/customizations
+
 // -----------------------
 // Convenience task to run 
 // hugo watch for the development
 // theme from its root directory
 
-gulp.task('hugo-dev-watch', function() {
+gulp.task('hugo-watch', function() {
   return gulp.src('', {read: false})
     .pipe(shell('hugo server --theme=ss-hugo --buildDrafts --watch', {
       cwd: "./../../"
     }))
 })
 
+
 // -----------------------
-// Watch / Clean
+// Core Tasks
 
 gulp.task('watch', ['copy-ship', 'sass-dev', 'sass-ship', 'jshint', 'browserify', 'js_ship'], function() {
   watchG( config.sass_src, function() {
@@ -93,8 +105,6 @@ gulp.task('watch', ['copy-ship', 'sass-dev', 'sass-ship', 'jshint', 'browserify'
   })
 })
   
-
-
 gulp.task('clean', function(cb) {
   del([
     dest_root,
@@ -102,35 +112,6 @@ gulp.task('clean', function(cb) {
     config.tmp_css
   ], {force: true}, cb)
 })
-
-// For development: 2 gulp commands, 2 terminals, same directory
-// gulp hugo-dev-watch
-// gulp watch
-
-
-// -----------------------
-// Browser Sync
-
-// gulp.task('bs', ['sass-dev', 'sass-ship', 'copy-ship'], function() {
-//   browserSync({
-//     // Proxy or Server
-//     // proxy: "localhost:2368",
-//     server: ({
-//       baseDir: "./"
-//     }),
-//     notify: false,
-//     open: false,
-//     logLevel: "info",
-//     logPrefix: "P&K",
-//     logFileChanges: false,
-//     ghostMode: {
-//         clicks: true,
-//         location: true,
-//         forms: true,
-//         scroll: false
-//     }
-//   })
-// })
 
 
 // -----------------------
@@ -168,6 +149,11 @@ gulp.task('sass-ship', function() {
 gulp.task('copy-ship', function() {
   return gulp.src(config.copy_src)
     .pipe(gulp.dest( dest_root ))
+})
+gulp.task('clean-ship', function(cb) {
+  del([
+    "./../**/*.{html,md,txt,yaml,json,toml}",
+  ], {force: true}, cb)
 })
 
 
