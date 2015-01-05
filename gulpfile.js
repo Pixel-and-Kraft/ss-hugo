@@ -1,13 +1,10 @@
 // if npm i doesn't work, install dependencies manually:
-// npm i --save-dev gulp browser-sync gulp-sass gulp-autoprefixer gulp-plumber gulp-csso gulp-rename gulp-sourcemaps gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del gulp-shell gulp-watch
+// npm i --save-dev gulp gulp-sass gulp-autoprefixer gulp-csso gulp-sourcemaps gulp-plumber gulp-size vinyl-source-stream vinyl-buffer gulp-util watchify browserify gulp-jshint jshint-stylish gulp-uglify del gulp-shell gulp-watch
 
 var gulp          = require('gulp')
-var browserSync   = require('browser-sync')
-var reload        = require('browser-sync').reload
 var sass          = require('gulp-sass')
 var autoprefixer  = require('gulp-autoprefixer')
 var csso          = require('gulp-csso')
-var rename        = require('gulp-rename')
 var sourcemaps    = require('gulp-sourcemaps')
 var plumber       = require('gulp-plumber')
 var size          = require('gulp-size')
@@ -57,7 +54,7 @@ var dest_root = "./../Awesome-New-Theme/"
 var config = { 
 
   // sources
-  copy_src:     ['**/*.{html,md,txt,yaml,json,toml}', '!./node_modules/**', '!./package.json'],
+  copy_meta:     ['*.{md,txt,yaml,json,toml}', '!./node_modules/**', '!./package.json', '!./static-src/**/*', '!./layouts/**/*'],
   sass_src:     "static-src/sass/**/*.{sass,scss}",
   js_src:       "static-src/js/**/*.js",
   js_src_entry: "./static-src/js/index.js",
@@ -94,17 +91,22 @@ gulp.task('hugo-watch', function() {
 // -----------------------
 // Core Tasks
 
-gulp.task('watch', ['copy-ship', 'sass-dev', 'sass-ship', 'jshint', 'browserify', 'js_ship'], function() {
-  watchG( config.sass_src, function() {
-    gulp.start('sass-dev')
-    gulp.start('sass-ship')
+gulp.task('default', ['clean'], function() {
+  gulp.start('watch')
+})
+
+gulp.task('watch', ['copy-layouts', 'copy-meta', 'sass-dev', 'sass-ship', 'jshint', 'browserify', 'js_ship'], function() {
+  watchG( 'layouts/**/*.html', function() {
+    gulp.start(['delete-layouts', 'copy-layouts'])
   })
+  watchG( config.copy_meta, function() {
+    gulp.start(['delete-meta', 'copy-meta'])
+  })
+  gulp.watch( config.sass_src, ['sass-dev', 'sass-ship'] )
   watchG( config.js_src, function() {
     gulp.start('jshint')
   })
-  gulp.watch(config.copy_src, ['clean-ship'], function() {
-    gulp.start('copy-ship')
-  })
+
 })
   
 gulp.task('clean', function(cb) {
@@ -120,7 +122,7 @@ gulp.task('clean', function(cb) {
 // SASS --> CSS
 
 gulp.task('sass-dev', function() {
-  gulp.src( config.sass_src )
+  return gulp.src( config.sass_src )
     .pipe(plumber())
     .pipe(sourcemaps.init())
       .pipe(sass({
@@ -131,7 +133,7 @@ gulp.task('sass-dev', function() {
     .pipe(gulp.dest( config.tmp_css ))
 })
 gulp.task('sass-ship', function() {
-  gulp.src( config.sass_src )
+  return gulp.src( config.sass_src )
     .pipe(plumber())
     .pipe(sass())
     .pipe(autoprefixer("last 1 version", "> 1%", "ie 9", { cascade: false }))
@@ -148,16 +150,31 @@ gulp.task('sass-ship', function() {
 // Copy
 // (eg: .html, .template, .md, .txt, etc)
 
-gulp.task('copy-ship', function() {
-  return gulp.src(config.copy_src)
+gulp.task('copy-layouts', function() {
+  return gulp.src("layouts/**/*")
+    .pipe(gulp.dest( dest_root + 'layouts/' ))
+})
+gulp.task('copy-meta', function() {
+  return gulp.src(config.copy_meta)
     .pipe(gulp.dest( dest_root ))
 })
-gulp.task('clean-ship', function(cb) {
-  del([
-    dest_root + "**/*.{html,md,txt,yaml,json,toml}",
+
+
+// Clear layout folder on save, preventing orphans 
+// Note: the watch tasks for this uses 'gulp-watch'
+// which only passes through modified files.
+// This means we can safely call these asyncly 
+// with the above copy tasks.
+gulp.task('delete-layouts', function(cb) {
+  del([ 
+    dest_root + 'layouts/**/*'
   ], {force: true}, cb)
 })
-
+gulp.task('delete-meta', function(cb) {
+  del([ 
+    dest_root + '*.{md,txt,yaml,json,toml}'
+  ], {force: true}, cb)
+})
 
 // -----------------------
 // Js --> single bundle
