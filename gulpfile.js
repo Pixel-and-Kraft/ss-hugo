@@ -154,7 +154,7 @@ gulp.task('copy-ship', function() {
 })
 gulp.task('clean-ship', function(cb) {
   del([
-    "./../" + dest_root + "**/*.{html,md,txt,yaml,json,toml}",
+    dest_root + "**/*.{html,md,txt,yaml,json,toml}",
   ], {force: true}, cb)
 })
 
