@@ -47,6 +47,8 @@ var watchG        = require('gulp-watch')
 
 // Theme Name
 var theme_name = "My-Awesome-Hugo-Theme"
+// development Theme Name
+var theme_name_dev = "ss-hugo"
 
 // Destination for deploy package
 // located at root of 'themes' directory
@@ -86,7 +88,7 @@ var config = {
 
 gulp.task('hugo-watch', function() {
   return gulp.src('', {read: false})
-    .pipe(shell('hugo server --theme=ss-hugo --buildDrafts --watch', {
+    .pipe(shell('hugo server --theme=' + theme_name_dev + ' --buildDrafts --watch', {
       cwd: "./../../"
     }))
 })
@@ -106,13 +108,14 @@ gulp.task('watch', ['copy-layouts', 'copy-meta', 'copy-images', 'sass-dev', 'sas
   watchG( config.copy_meta, function() {
     gulp.start(['delete-meta', 'copy-meta'])
   })
+  gulp.watch( config.sass_src, ['sass-dev', 'sass-ship'] )
   watchG( config.js_src, function() {
     gulp.start('jshint')
   })
   watchG( config.img_src, function() {
     gulp.start(['copy-images'])
   })
-  gulp.watch( config.sass_src, ['sass-dev', 'sass-ship'] )
+
 })
   
 gulp.task('clean', function(cb) {
