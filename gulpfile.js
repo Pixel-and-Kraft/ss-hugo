@@ -106,14 +106,13 @@ gulp.task('watch', ['copy-layouts', 'copy-meta', 'copy-images', 'sass-dev', 'sas
   watchG( config.copy_meta, function() {
     gulp.start(['delete-meta', 'copy-meta'])
   })
-  gulp.watch( config.sass_src, ['sass-dev', 'sass-ship'] )
   watchG( config.js_src, function() {
     gulp.start('jshint')
   })
-  gulp.watch( config.img_src, function() {
+  watchG( config.img_src, function() {
     gulp.start(['copy-images'])
   })
-
+  gulp.watch( config.sass_src, ['sass-dev', 'sass-ship'] )
 })
   
 gulp.task('clean', function(cb) {
