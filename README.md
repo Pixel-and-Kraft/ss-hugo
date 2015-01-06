@@ -1,6 +1,6 @@
 # SS-Hugo
 
-Our starting point for Hugo themes.
+A starting point for Hugo theme development.
 
 ## Usage: Setting Up
 
@@ -41,9 +41,9 @@ A goal of ss-hugo is to introduce no more mental load than necessary. Accordingl
 1. A development version
 2. A deployment version
 
-**The development version** is for development. Scripts and styles include source maps for sane debugging.
+In **the development version,** scripts and styles include source maps for sane debugging.
 
-**The deployment version** is for deployment. Scripts and styles are minified. No source maps are included. 
+In **the deployment version,** scripts and styles are minified. No source maps are included. 
 
 ## Note
 

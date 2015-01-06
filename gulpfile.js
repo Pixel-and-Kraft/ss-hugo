@@ -45,30 +45,34 @@ var watchG        = require('gulp-watch')
 
 // --- Configuration below ---
 
-// Destination for shippable theme
-// Needs to go to root of 'themes' directory
-// Rename for your theme
-var dest_root = "./../Awesome-New-Theme/"
+// Theme Name
+var theme_name = "My-Awesome-Hugo-Theme"
+
+// Destination for deploy package
+// located at root of 'themes' directory
+var dest_root = "./../" + theme_name + "/"
 
 // All other config here: 
 var config = { 
 
   // sources
-  copy_meta:     ['*.{md,txt,yaml,json,toml}', '!./node_modules/**', '!./package.json', '!./static-src/**/*', '!./layouts/**/*'],
-  sass_src:     "static-src/sass/**/*.{sass,scss}",
-  js_src:       "static-src/js/**/*.js",
-  js_src_entry: "./static-src/js/index.js",
+  copy_meta:    ['*.{md,txt,yaml,json,toml}', '!./node_modules/**', '!./package.json', '!./static-src/**/*', '!./layouts/**/*'],
+  img_src:      "static-src/assets/images/**/*.{jpg,jpeg,png,svg}",
+  sass_src:     "static-src/assets/sass/**/*.{sass,scss}",
+  js_src:       "static-src/assets/js/**/*.js",
+  js_src_entry: "./static-src/assets/js/index.js",
   
   // tmp locations for development
-  tmp_js:   "./static/js",
-  tmp_css:  "static/css",
+  tmp_js:   "./static/assets/js",
+  tmp_css:  "static/assets/css",
 
   // name for single browserified bundle
   bundle_js: "bundle.js",
 
   // specific destination paths
-  dest_js:   dest_root + "static/js",
-  dest_css:  dest_root + "static/css"
+  dest_js:   dest_root + "static/assets/js",
+  dest_css:  dest_root + "static/assets/css",
+  dest_img:  dest_root + "static/assets/images"
 }
 
 
@@ -95,7 +99,7 @@ gulp.task('default', ['clean'], function() {
   gulp.start('watch')
 })
 
-gulp.task('watch', ['copy-layouts', 'copy-meta', 'sass-dev', 'sass-ship', 'jshint', 'browserify', 'js_ship'], function() {
+gulp.task('watch', ['copy-layouts', 'copy-meta', 'copy-images', 'sass-dev', 'sass-ship', 'jshint', 'browserify', 'js_ship'], function() {
   watchG( 'layouts/**/*.html', function() {
     gulp.start(['delete-layouts', 'copy-layouts'])
   })
@@ -105,6 +109,9 @@ gulp.task('watch', ['copy-layouts', 'copy-meta', 'sass-dev', 'sass-ship', 'jshin
   gulp.watch( config.sass_src, ['sass-dev', 'sass-ship'] )
   watchG( config.js_src, function() {
     gulp.start('jshint')
+  })
+  gulp.watch( config.img_src, function() {
+    gulp.start(['copy-images'])
   })
 
 })
@@ -157,6 +164,10 @@ gulp.task('copy-layouts', function() {
 gulp.task('copy-meta', function() {
   return gulp.src(config.copy_meta)
     .pipe(gulp.dest( dest_root ))
+})
+gulp.task('copy-images', function() {
+  return gulp.src(config.img_src) 
+    .pipe(gulp.dest( config.dest_img ))
 })
 
 
