@@ -16,12 +16,15 @@
 @import "core/helpers";
 @import "core/type";
 @import "core/states";
+@import "core/syntax-skin-import";
+@import "core/animate/animate";
 
 // -
 
 @import "shared-components/buttons";
 @import "shared-components/lines";
 @import "shared-components/images";
+@import "shared-components/code";
 
 // -
 

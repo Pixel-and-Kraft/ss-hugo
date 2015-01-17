@@ -10,6 +10,8 @@
   padding: 5px
   // border-radius: 3px
 
+.font-family--heading
+  font-family: $font-family-heading
 %no-select, .no-select
   -webkit-user-select: none
   -moz-user-select: none
@@ -17,3 +19,23 @@
   /* No support for these yet, use at own risk */
   -o-user-select: none
   user-select: none
+
+.clearfix:after
+  content: ""
+  display: table
+  clear: both
+
+.disable-events
+  pointer-events: none
+  cursor: default
+  &:hover
+    color: inherit
+    border: none
+    cursor: default
+.disable-events-pseudo
+  pointer-events: none
+  &:hover
+    border: none
+
+.center 
+  text-align: center
