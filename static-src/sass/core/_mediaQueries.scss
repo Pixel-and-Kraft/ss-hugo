@@ -6,6 +6,11 @@
     @content
   }
 }
+@mixin bpMax($point) {
+  @media screen and (max-width: $point) {
+    @content
+  }
+}
 
 // --------------------
 // Pre-Defined

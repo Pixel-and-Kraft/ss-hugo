@@ -4,7 +4,34 @@
   "description": "Our starting point for Hugo theme development.",
   "main": "source/js/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "hugo:watch": "cd ../../ && hugo server --theme=$npm_package_config_themeNameDev --buildDrafts --watch",
+    "css:build-Min": "sassc -t compressed static-src/sass/main.scss > ../$npm_package_config_themeName/static/css/main.css",
+    "css:build-Dev": "sassc -l -m -M static-src/sass/main.scss > static/css/main.css",
+    "css:build": "npm run css:build-Dev & npm run css:build-Min & wait",
+    "css:watch": "onchange static-src/sass/**/* -- npm run css:build",
+    "postcss:build-Min": "echo [SS-HUGO] main.css built and minified to theme!",
+    "postcss:build-Dev": "echo [SS-HUGO] main.css built!",
+    "js:runHint": "jshint static-src/js/",
+    "js:watchHint": "onchange static-src/js/**/*.js -- npm run js:runHint",
+    "js:build-Bundle": "browserify static-src/js/bundle/index.js > static/js/bundle.js",
+    "js:watch-Bundle": "onchange static-src/js/bundle/**/*.js -- npm run js:build-Bundle",
+    "js:build-Vendor": "cat static-src/js/vendor/vendor-global/*.js | uglifyjs > static/js/vendor.js",
+    "js:watch-Vendor": "onchange static-src/js/vendor/vendor-global/**/*.js -- npm run js:build-Vendor",
+    "js:build-VendorHome": "cat static-src/js/vendor/vendor-home/*.js | uglifyjs > static/js/vendorHome.js",
+    "js:watch-VendorHome": "onchange static-src/js/vendor/vendor-home -- npm run js:build-VendorHome",
+    "postjs:build-Bundle": "npm run js:copy && echo [SS-HUGO] main.js rebuilt!",
+    "postjs:build-Vendor": "npm run js:copy && echo [SS-HUGO] vendor.js rebuilt! and uglified",
+    "postjs:build-VendorHome": "npm run js:copy && echo [SS-HUGO] vendorHome.js rebuilt and uglified!",
+    "js:copy": "uglifyjs static/js/bundle.js && rsync -a static/js ../$npm_package_config_themeName/static & rsync -a static/js ../$npm_package_config_themeName/static & wait",
+    "js:build": "npm run js:build-Bundle & npm run js:build-Vendor & npm run js:build-VendorHome & wait",
+    "js:watch": "npm run js:watch-Bundle & npm run js:watch-Vendor & npm run js:watch-VendorHome & wait",
+    "layouts:copy": "cp -a layouts/** ../$npm_package_config_themeName/layouts",
+    "layouts:watch": "onchange layouts/**/* -- npm run layouts:copy",
+    "build": "npm run js:build & npm run css:build & npm run layouts:copy & wait",
+    "watch": "npm run js:watch & npm run css:watch & npm run layouts:watch & wait",
+    "dev": "npm run build && npm run watch",
+    "prebuild": "mkdir -p {../$npm_package_config_themeName{/layouts,/static/css},static/css,static/js} ",
+    "predev": "rm -rf {../$npm_package_config_themeName,static/}"
   },
   "repository": {
     "type": "git",
@@ -13,7 +40,7 @@
   "author": "Pixel & Kraft",
   "license": "ISC",
   "devDependencies": {
-    "browserify": "^8.0.3",
+    "browserify": "^8.1.1",
     "del": "^1.1.1",
     "gulp": "^3.8.10",
     "gulp-autoprefixer": "^2.0.0",
@@ -29,8 +56,14 @@
     "gulp-util": "^3.0.1",
     "gulp-watch": "^3.0.0",
     "jshint-stylish": "^1.0.0",
+    "onchange": "0.0.2",
+    "uglify-js": "^2.4.16",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^2.2.1"
+  },
+  "config": {
+    "themeName": "My-Awesome-Hugo-Theme",
+    "themeNameDev": "ss-hugo"
   }
 }

@@ -56,3 +56,6 @@ In **the deployment version,** scripts and styles are minified. No source maps a
 
 **For the Curious:**  
 The repo's "ss" is short for "Solid Start."
+
+see here for npm cli flags:  
+https://docs.npmjs.com/misc/config
