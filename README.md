@@ -15,16 +15,16 @@ A starting point for Hugo theme development with asset builds via NPM scripts.
 
 ## Usage: Developing a Theme
 
-In 2 terminals, 2 commands:  
+From the theme directories root, in 2 terminals, 2 commands:  
 
 1. `npm hugo:w`
 2. `npm start`
 
-**Command 1:**  
+### `npm hugo:w`  
 A convenience task for starting hugo watch (`hugo server --theme=ss-hugo --buildDrafts --watch`). An attempt to reduce complexity. 
 - if/when you change the theme's direcotry name, also change the `themeName` variable in `package.json`.
 
-**Command 2:**  
+### `npm start`
 Starts watch tasks that:
 - compiles `.sass/.scss` to `.css`
 - lents scripts via jshint
