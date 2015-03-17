@@ -1,6 +1,6 @@
 # SS-Hugo
 
-A starting point for Hugo theme development.
+A starting point for Hugo theme development with asset builds via NPM scripts. 
 
 ## Usage: Setting Up
 
@@ -17,45 +17,32 @@ A starting point for Hugo theme development.
 
 In 2 terminals, 2 commands:  
 
-1. `gulp`
-2. `gulp hugo-watch`
+1. `npm hugo:w`
+2. `npm start`
 
 **Command 1:**  
-First, cleans destination (build) theme.
-Then, runs front-end-asset development watch tasks.  
-- .sass/.scss to .css
-- script lenting via jshint
-- single browserified js build via watchify
+A convenience task for starting hugo watch (`hugo server --theme=ss-hugo --buildDrafts --watch`). An attempt to reduce complexity. 
+- if/when you change the theme's direcotry name, also change the `themeName` variable in `package.json`.
 
 **Command 2:**  
-A convenience task for running the necessary hugo commands from the development theme's directory (`hugo server --theme=ss-hugo --buildDrafts --watch`). An attempt to reduce complexity. 
+Starts watch tasks that:
+- compiles `.sass/.scss` to `.css`
+- lents scripts via jshint
+- browserifies scripts into a single `bundle.js`
 
 **With both commands running (each in their own terminal),** develop away :)
 
-*Note: running 'gulp watch' is the same as simply running 'gulp' except that it skips the initial cleaning task (not recommended, but useful if you're sure of no orphans)*
+## Notes
 
-## ABB (Always Be Building)
-
-A goal of ss-hugo is to introduce no more mental load than necessary. Accordingly, the `gulp watch` command (which is started via the `default` task, the one that runs when via `gulp` in the console) simultaneously watches and builds two theme versions: 
-
-1. A development version
-2. A deployment version
-
-In **the development version,** scripts and styles include source maps for sane debugging.
-
-In **the deployment version,** scripts and styles are minified. No source maps are included. 
-
-## Note
-
-- A work in progress. 
-- Use at your own risk! 
-- Feel free to request insight/help and such in the issues.
+- A work in progress.
+- It's true, we've yet to release any Hugo themes. But this is how we use Hugo for our own projects (due to the benefits of a hugo theme's module nature). Figured we might as well put it out there for others.
 - Insight/feedback/PRs welcomed.
 
----
+## Credit where it's due
 
-**For the Curious:**  
-The repo's "ss" is short for "Solid Start."
+We're currently transitioning our build tool from Gulp to NPM. Inspiration and insight on this has come primarily from two very helpful blog posts:  
 
-see here for npm cli flags:  
-https://docs.npmjs.com/misc/config
+- [How to Use NPM as a Build Tool](http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/) by Keith Cirkel
+- [Task Automation with NPM run](http://substack.net/task_automation_with_npm_run) by James Halliday
+
+We're indebted to the authors of each.
