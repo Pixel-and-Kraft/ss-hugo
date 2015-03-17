@@ -34,9 +34,9 @@ Starts watch tasks that:
 
 ## Notes
 
-- A work in progress
+- a work in progress
+- insight/feedback/PRs encouraged
 - It's true, we've yet to release any Hugo themes. But this is how we use Hugo for our own projects (due to the benefits of a hugo theme's module nature). Figured we might as well put it out there for others.
-- Insight/feedback/PRs encouraged
 
 ## Credit where it's due
 
