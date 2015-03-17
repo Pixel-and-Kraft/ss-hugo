@@ -1,8 +1,7 @@
 {
   "name": "ss-hugo",
   "version": "1.0.0",
-  "description": "Our starting point for Hugo theme development.",
-  "main": "source/js/index.js",
+  "description": "A simple boiler plate for Hugo theme development.",
   "scripts": {
     "hugo:w": "cd ../../ && hugo server --theme=$npm_package_config_themeName --buildDrafts --watch",
     "hugo:b": "cd ../../ && hugo --theme$npm_package_config_themeName",
@@ -25,7 +24,7 @@
     "url": "https://github.com/Pixel-and-Kraft/ss-hugo"
   },
   "author": "Pixel & Kraft",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^5.1.0",
     "browserify": "^9.0.3",
